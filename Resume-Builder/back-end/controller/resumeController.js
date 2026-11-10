@@ -1,4 +1,5 @@
-import imageFeature from "../configs/imagefeature.js";
+
+import imageFeature from "../configs/imageFeature.js";
 import Resume from "../models/Resume.js";
 import fs from 'fs';
 
