@@ -105,23 +105,40 @@ const ResumeBuilder = () => {
 
   const resumeUrl = `${window.location.origin}/view/${resumeId}`;
 
-  const downloadQRCode = () => {
-    const canvas = document.querySelector('#resume-qr-code canvas');
 
-    if (!canvas) {
-      toast.error('QR Code not found');
-      return;
-    }
 
-    const url = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
+  const generateDesign = () => {
+    const templates = [
+      "classic", "modern", "minimal", "minimal-image",
+      "ats", "executive", "elegant", "creative",
+      "developer", "twoColumn", "infographic",
+      "professionalDark", "minimalBeige", "modernGreen",
+      "modernOrange", "academic", "compact",
+      "gradient", "timeline", "professionalPhoto"
+    ];
 
-    link.href = url;
-    link.download = 'My-Resume-QR-Code.png';
-    link.click();
+    const colors = [
+      "#3B82F6", "#6366F1", "#8B5CF6", "#10B891",
+      "#EF4444", "#F97316", "#14B8A6", "#EC4899",
+      "#6B7280", "#1F2937"
+    ];
 
-    toast.success('QR Code downloaded!');
+    const randomTemplate =
+      templates[Math.floor(Math.random() * templates.length)];
+
+    const randomColor =
+      colors[Math.floor(Math.random() * colors.length)];
+
+    setResumeData(prev => ({
+      ...prev,
+      template: randomTemplate,
+      accent_color: randomColor
+    }));
+
+    toast.success("Design Applied Successfully! ✨");
   };
+
+
 
   const saveResume = async () => {
     try {
@@ -214,6 +231,7 @@ const ResumeBuilder = () => {
 
               <div className='flex justify-between items-center mb-6 border-b border-gray-300 py-3'>
                 <div className='flex items-center gap-2'>
+
                   <TemplatesSelector
                     selectTemplates={resumeData.template}
                     onChange={(template) => {
@@ -382,105 +400,67 @@ const ResumeBuilder = () => {
                 </div>
               </div>
             )}
-            {showQRPopup && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-                <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
-
-                  <button
-                    onClick={() => setShowQRPopup(false)}
-                    className="absolute right-3 top-3 rounded-full p-2 text-gray-500 hover:bg-gray-100"
+          </div>
+          {/* Right side - Live Preview */}
+          <div className='lg:col-span-7 max-lg:mt-6'>
+            <div className='relative w-full mb-4'>
+              <div className='flex flex-wrap items-center justify-end gap-2'>
+                <button
+                    onClick={generateDesign}
+                    className="flex items-center gap-1 text-sm text-purple-600
+                    bg-gradient-to-br from-purple-50 to-purple-100
+                  hover:from-purple-100 hover:to-purple-200
+                    transition-all px-3 py-2 rounded-lg font-medium"
                   >
-                    <X size={22} />
+                    <Sparkles size={15} />
+                    <span className="max-sm:hidden">Generate Design</span>
                   </button>
 
-                  <h2 className="mb-2 text-xl font-bold text-gray-800">
-                    Resume QR Code
-                  </h2>
-
-                  <p className="mb-5 text-sm text-gray-500">
-                    Scan this QR Code to view and download your resume.
-                  </p>
-
-                  <div id="resume-qr-code" className="flex justify-center">
-                    <QRCodeCanvas
-                      value={resumeUrl}
-                      size={220}
-                      level="H"
-                      includeMargin={true}
-                    />
-                  </div>
-                  <button
-                    onClick={downloadQRCode}
-                    className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-                  >
-                    <Download size={16} />
-                    Download QR Code
-                  </button>
-                </div>
-              </div>
-            )}
-</div>
-            {/* Right side - Live Preview */}
-            <div className='lg:col-span-7 max-lg:mt-6'>
-              <div className='relative w-full mb-4'>
-                <div className='flex flex-wrap items-center justify-end gap-2'>
-                  <button
-                    disabled={careerLoading}
-                    onClick={analyzeCareer}
-                    className='flex items-center p-2 px-4 gap-2 text-xs
+                <button
+                  disabled={careerLoading}
+                  onClick={analyzeCareer}
+                  className='flex items-center p-2 px-4 gap-2 text-xs
                   bg-gradient-to-br from-blue-100 to-blue-200
                 text-blue-600 rounded-lg ring-blue-300
                   hover:ring font-medium disabled:opacity-50'
-                  >
-                    <Sparkles className='size-4' />
-                    {careerLoading ? 'Analyzing...' : 'AI Resume Analyze'}
-                  </button>
-
-                  {resumeData.public && (
-                    <button
-                      onClick={() => setShowQRPopup(true)}
-                      className='flex items-center p-2 px-4 gap-2 text-xs
-                    bg-gradient-to-br from-purple-100 to-purple-200
-                  text-purple-600 rounded-lg ring-purple-300 hover:ring font-medium'
-                    >
-                      <QrCode className='size-4' />
-                      Generate QR Code
-                    </button>
-                  )}
-                  {resumeData.public && (
-                    <button
-                      onClick={handleShare}
-                      className='flex items-center p-2 px-4 gap-2 text-xs bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 rounded-lg ring-blue-300 hover:ring font-medium'
-                    >
-                      <Share2Icon className='size-4' /> Share
-                    </button>
-                  )}
+                >
+                  <Sparkles className='size-4' />
+                  {careerLoading ? 'Analyzing...' : 'AI Resume Analyze'}
+                </button>
+                {resumeData.public && (
                   <button
-                    onClick={changeResumeVisibility}
-                    className='flex items-center p-2 px-4 gap-2 text-xs bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 rounded-lg ring-purple-300 hover:ring font-medium'
+                    onClick={handleShare}
+                    className='flex items-center p-2 px-4 gap-2 text-xs bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 rounded-lg ring-blue-300 hover:ring font-medium'
                   >
-                    {resumeData.public ? <EyeIcon className='size-4' /> : <EyeOffIcon className='size-4' />}
-                    {resumeData.public ? 'Public' : 'Private'}
+                    <Share2Icon className='size-4' /> Share
                   </button>
-                  <button
-                    onClick={downloadResume}
-                    className='flex items-center p-2 px-4 gap-2 text-xs bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-lg ring-green-300 hover:ring font-medium'
-                  >
-                    <Download className='size-4' /> Download PDF
-                  </button>
-                </div>
+                )}
+                <button
+                  onClick={changeResumeVisibility}
+                  className='flex items-center p-2 px-4 gap-2 text-xs bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 rounded-lg ring-purple-300 hover:ring font-medium'
+                >
+                  {resumeData.public ? <EyeIcon className='size-4' /> : <EyeOffIcon className='size-4' />}
+                  {resumeData.public ? 'Public' : 'Private'}
+                </button>
+                <button
+                  onClick={downloadResume}
+                  className='flex items-center p-2 px-4 gap-2 text-xs bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-lg ring-green-300 hover:ring font-medium'
+                >
+                  <Download className='size-4' /> Download PDF
+                </button>
               </div>
-
-              <ResumePreview
-                data={resumeData}
-                templates={resumeData.template}
-                accentColor={resumeData.accent_color}
-              />
             </div>
+
+            <ResumePreview
+              data={resumeData}
+              templates={resumeData.template}
+              accentColor={resumeData.accent_color}
+            />
           </div>
         </div>
       </div>
-      );
+    </div>
+  );
 };
 
-      export default ResumeBuilder;
+export default ResumeBuilder;
