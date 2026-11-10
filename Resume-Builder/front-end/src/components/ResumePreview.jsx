@@ -149,14 +149,6 @@ const ResumePreview = ({ data, templates, accentColor, classes = '' }) => {
         }
     }
 `}</style>
-
-
-
-
-
-
-
-
         </div>
     )
 }
