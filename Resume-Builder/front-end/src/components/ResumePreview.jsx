@@ -31,9 +31,9 @@ const ResumePreview = ({ data, templates, accentColor, classes = '' }) => {
                 return <MinimalTemplate data={data} accentColor={accentColor} />;
             case 'minimal-image':
                 return <MinimalImageTemplate data={data} accentColor={accentColor} />;
-            case 'ats':
-                return <AtsTemplate data={data} accentColor={accentColor} />;
-            case 'executive':
+             case 'ats':
+             return <AtsTemplate data={data} accentColor={accentColor} />;
+             case 'executive':
                 return <ExecutiveTemplate data={data} accentColor={accentColor} />;
 
             case 'elegant':
@@ -89,22 +89,33 @@ const ResumePreview = ({ data, templates, accentColor, classes = '' }) => {
             }>
                 {renderTemplates()}
             </div>
+          
+          
 
 
 
 
-
-            {/* <style jsx global>{`
+<style jsx global>{`
     @page {
         size: A4;
         margin: 0;
     }
 
     @media print {
+
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
         html, body {
             width: 100%;
             height: auto;
+            margin: 0;
+            padding: 0;
             overflow: visible;
+            background: white;
         }
 
         body *:not(#resume-preview, #resume-preview *) {
@@ -137,70 +148,8 @@ const ResumePreview = ({ data, templates, accentColor, classes = '' }) => {
             break-after: avoid;
         }
     }
-`}</style> */}
-
-            <style>{`
-    
-@page {
-    size: A4;
-    margin: 12mm 10mm 10mm 10mm;
-}
-
-@media print {
-
-    * {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-        color-adjust: exact !important;
-    }
-
-    html, body {
-        width: 100%;
-        height: auto;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: visible !important;
-        background: white !important;
-    }
-
-    body * {
-        visibility: hidden;
-    }
-
-    #resume-preview,
-    #resume-preview * {
-        visibility: visible;
-    }
-
-    #resume-preview {
-        position: relative;
-        width: 100%;
-        max-width: none;
-        height: auto;
-        margin: 0;
-        padding: 0;
-        overflow: visible;
-        border: none !important;
-        box-shadow: none !important;
-        box-sizing: border-box;
-    }
-
-    .resume-section {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-
-    h1, h2, h3 {
-        break-after: avoid;
-        page-break-after: avoid;
-    }
-
-    button {
-        display: none !important;
-    }
-}
-
 `}</style>
+
 
 
 
