@@ -26,10 +26,9 @@ const Preview = () => {
 
   };
 
-  const downloadPDF = () => {
-    window.print();
-  };
-
+ const downloadPDF = () => {
+  window.print();
+};
   useEffect(() => {
     loadResume();
   }, [resumeId]);
