@@ -9,7 +9,6 @@ import { useEffect } from 'react'
 import api from './configs/api'
 import { login, setloading } from './app/features/authSlice'
 import {Toaster} from 'react-hot-toast'
-import AIAdvisor from './pages/AiAdvisor'
 
 
 const App = () => {
@@ -46,7 +45,6 @@ const App = () => {
       <Route path='app' element={<Layout />} >
         <Route index element={<Dashboard />} />
         <Route path='builder/:resumeId' element={<ResumeBuilder />} />
-        <Route path='ai-advisor' element={<AIAdvisor />} />
       </Route>
       <Route path='view/:resumeId' element={<Preview />}/>
     </Routes>
